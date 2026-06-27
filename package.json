@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "bun --watch src/server.ts",
+    "seed": "bun src/seeder/index.ts",
     "test": "vitest run"
   },
   "devDependencies": {
@@ -22,6 +23,7 @@
     "typescript": "^6.0.3"
   },
   "dependencies": {
+    "@faker-js/faker": "^10.5.0",
     "better-auth": "^1.6.10",
     "dotenv": "^17.4.2",
     "drizzle-orm": "^0.45.2",
