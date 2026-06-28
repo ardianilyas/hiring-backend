@@ -3,6 +3,7 @@ import { db } from "../../db";
 import { departments } from "../../db/schemas";
 import { NotFoundError } from "../../errors/not-found";
 import type { CreateDepartmentDto, UpdateDepartmentDto } from "./department.dto";
+import { DEPARTMENT_NOT_FOUND } from "./department.constant";
 
 export class DepartmentService {
   async getDepartments() {
@@ -13,7 +14,7 @@ export class DepartmentService {
     const [department] = await db.select().from(departments).where(eq(departments.id, id));
 
     if (!department) {
-      throw new NotFoundError("Department not found");
+      throw new NotFoundError(DEPARTMENT_NOT_FOUND);
     }
 
     return department;
@@ -33,7 +34,7 @@ export class DepartmentService {
       .returning();
 
     if (!department) {
-      throw new NotFoundError("Department not found");
+      throw new NotFoundError(DEPARTMENT_NOT_FOUND);
     }
 
     return department;
@@ -43,7 +44,7 @@ export class DepartmentService {
     const [department] = await db.delete(departments).where(eq(departments.id, id)).returning();
 
     if (!department) {
-      throw new NotFoundError("Department not found");
+      throw new NotFoundError(DEPARTMENT_NOT_FOUND);
     }
 
     return department;
