@@ -3,6 +3,7 @@ import { db } from "../../db";
 import { jobOpenings } from "../../db/schemas";
 import { NotFoundError } from "../../errors/not-found";
 import type { CreateJobOpeningDto, UpdateJobOpeningDto } from "./job-opening.dto";
+import { JOB_OPENING_NOT_FOUND } from "./job-opening.constant";
 
 export class JobOpeningService {
   async getJobOpenings() {
@@ -13,7 +14,7 @@ export class JobOpeningService {
     const [jobOpening] = await db.select().from(jobOpenings).where(eq(jobOpenings.id, id));
 
     if(!jobOpening) {
-      throw new NotFoundError("Job opening not found");
+      throw new NotFoundError(JOB_OPENING_NOT_FOUND);
     }
 
     return jobOpening;
@@ -29,7 +30,7 @@ export class JobOpeningService {
     const [jobOpening] = await db.update(jobOpenings).set(data).where(eq(jobOpenings.id, id)).returning();
 
     if(!jobOpening) {
-      throw new NotFoundError("Job opening not found");
+      throw new NotFoundError(JOB_OPENING_NOT_FOUND);
     }
 
     return jobOpening;
@@ -39,7 +40,7 @@ export class JobOpeningService {
     const [jobOpening] = await db.delete(jobOpenings).where(eq(jobOpenings.id, id)).returning();
 
     if(!jobOpening) {
-      throw new NotFoundError("Job opening not found");
+      throw new NotFoundError(JOB_OPENING_NOT_FOUND);
     }
 
     return jobOpening;
