@@ -5,7 +5,8 @@ export async function clearDb() {
   await db.execute(
     sql.raw(`
       TRUNCATE TABLE
-        departments
+        departments,
+        job_openings
       RESTART IDENTITY
       CASCADE;
     `)
