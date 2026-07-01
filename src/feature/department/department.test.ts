@@ -1,35 +1,22 @@
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { clearDb } from "../../../tests/helpers/clear-db";
+import { beforeEach, describe, expect, it } from "vitest";
 import { authenticate } from "../../../tests/helpers/auth.helper";
 import request from "supertest";
 import app from "../../server";
 import { DEPARTMENT_DTO_VALIDATION_MESSAGE, DEPARTMENT_NOT_FOUND, DEPARTMENT_ROUTE_TEST, DEPARTMENT_SUCCESS_MESSAGE } from "./department.constant";
-import type { CreateDepartmentDto } from "./department.dto";
-import { db } from "../../db";
-import { departments } from "../../db/schemas";
+import { createTestDepartment } from "../../helpers/department.factory";
 
 describe("Department endpoint test", () => {
   let departmentId: string;
   const invalidUuid = "00000000-0000-0000-0000-000000000000";
 
   beforeEach(async () => {
-    const data: CreateDepartmentDto = {
-      name: "Finance",
-      description: "Finance department",
-      isActive: true,
-    }
-
-    const [department] = await db.insert(departments).values(data).returning();
+    const department = await createTestDepartment();
 
     if(!department) {
       throw new Error("Failed to create department");
     }
 
     departmentId = department.id;
-  });
-
-  afterEach(async () => {
-    await clearDb();
   });
 
   describe("GET /api/departments", () => {
@@ -40,7 +27,7 @@ describe("Department endpoint test", () => {
       expect(response.body.message).toBe("Unauthorized");
     });
     
-    it("should return 400 and get all departments", async () => {
+    it("should return 200 and get all departments", async () => {
       const auth = await authenticate();
       const response = await auth.agent.get(DEPARTMENT_ROUTE_TEST.GET_DEPARTMENTS);
 
@@ -74,7 +61,7 @@ describe("Department endpoint test", () => {
       expect(response.body.message).toBe("Department not found");
     })
 
-    it("should return 400 and get department by id", async () => {
+    it("should return 200 and get department by id", async () => {
       const auth = await authenticate();
       const response = await auth.agent.get(DEPARTMENT_ROUTE_TEST.GET_DEPARTMENT(departmentId));
 
