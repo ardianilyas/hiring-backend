@@ -1,10 +1,12 @@
 import { seedDepartments } from "./department.seeder";
+import { seedJobOpening } from "./job-opening.seeder";
 
 async function seed() {
   try {
     console.log("Seeding database");
 
-    await seedDepartments(20);
+    const departmentIds = await seedDepartments(20);
+    await seedJobOpening(departmentIds, 10);
 
     console.log("Database seeded");
     process.exit(0);
