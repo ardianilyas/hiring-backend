@@ -7,11 +7,21 @@ import { JOB_OPENING_NOT_FOUND } from "./job-opening.constant";
 
 export class JobOpeningService {
   async getJobOpenings() {
-    return await db.select().from(jobOpenings).where(eq(jobOpenings.isActive, true)).orderBy(desc(jobOpenings.createdAt));
+    return await db.query.jobOpenings.findMany({
+      orderBy: [desc(jobOpenings.createdAt)],
+      with: {
+        department: true
+      }
+    })
   }
 
   async getJobOpening(id: string) {
-    const [jobOpening] = await db.select().from(jobOpenings).where(eq(jobOpenings.id, id));
+    const [jobOpening] = await db.query.jobOpenings.findMany({
+      where: eq(jobOpenings.id, id),
+      with: {
+        department: true,
+      }
+    });
 
     if(!jobOpening) {
       throw new NotFoundError(JOB_OPENING_NOT_FOUND);
