@@ -54,6 +54,7 @@ describe("Job opening test", () => {
       expect(response.status).toBe(200);
       expect(response.body.message).toBe(JOB_OPENING_SUCCESS_MESSAGE.GET_JOB_OPENINGS);
       expect(response.body.data).toBeInstanceOf(Array);
+      expect(response.body.data[0].department).toBeInstanceOf(Object);
     });
   });
 
@@ -97,6 +98,7 @@ describe("Job opening test", () => {
       expect(response.status).toBe(200);
       expect(response.body.message).toBe(JOB_OPENING_SUCCESS_MESSAGE.GET_JOB_OPENING)
       expect(response.body.data).toBeInstanceOf(Object);
+      expect(response.body.data.department).toBeInstanceOf(Object);
     });
   });
 
