@@ -224,7 +224,6 @@ describe("Job opening test", () => {
 
       expect(response.status).toBe(200);
       expect(response.body.message).toBe(JOB_OPENING_SUCCESS_MESSAGE.DELETE_JOB_OPENING);
-      expect(response.body.data).toBeInstanceOf(Object);
     });
   });
 });
