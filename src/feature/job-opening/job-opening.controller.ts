@@ -35,7 +35,7 @@ export class JobOpeningController {
 
   deleteJobOpening = asyncHandler(async(req: Request, res: Response) => {
     const id = validate(getJobOpeningDto, req.params.id);
-    const jobOpening = await this.jobOpeningService.deleteJobOpening(id);
-    return sendSuccess(res, JOB_OPENING_SUCCESS_MESSAGE.DELETE_JOB_OPENING, jobOpening);
+    await this.jobOpeningService.deleteJobOpening(id);
+    return sendSuccess(res, JOB_OPENING_SUCCESS_MESSAGE.DELETE_JOB_OPENING);
   });
 }

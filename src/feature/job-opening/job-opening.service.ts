@@ -53,6 +53,6 @@ export class JobOpeningService {
       throw new NotFoundError(JOB_OPENING_NOT_FOUND);
     }
 
-    return jobOpening;
+    return true;;
   }
 }
