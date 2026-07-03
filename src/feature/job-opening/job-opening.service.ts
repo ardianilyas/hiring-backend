@@ -1,7 +1,7 @@
 import { desc, eq } from "drizzle-orm";
-import { db } from "../../db";
-import { jobOpenings } from "../../db/schemas";
-import { NotFoundError } from "../../errors/not-found";
+import { db } from "../../shared/db";
+import { jobOpenings } from "../../shared/db/schemas";
+import { NotFoundError } from "../../shared/errors/not-found";
 import type { CreateJobOpeningDto, UpdateJobOpeningDto } from "./job-opening.dto";
 import { JOB_OPENING_NOT_FOUND } from "./job-opening.constant";
 

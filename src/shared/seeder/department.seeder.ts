@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { db } from "../db";
 import { departments } from "../db/schemas";
-import type { CreateDepartmentDto } from "../feature/department/department.dto";
+import type { CreateDepartmentDto } from "../../feature/department/department.dto";
 
 export async function seedDepartments(count: number = 0) {
   

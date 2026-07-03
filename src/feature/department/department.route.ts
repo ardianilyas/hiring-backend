@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { DepartmentService } from "./department.service";
 import { DepartmentController } from "./department.controller";
-import { authMiddleware } from "../../middlewares/auth.middleware";
+import { authMiddleware } from "../../shared/middlewares/auth.middleware";
 import { DEPARTMENT_ROUTE } from "./department.constant";
-import { requireRole } from "../../middlewares/require-role";
+import { requireRole } from "../../shared/middlewares/require-role";
 
 const router = Router();
 const departmentService = new DepartmentService();

@@ -3,7 +3,7 @@ import { authenticate } from "../../../tests/helpers/auth.helper";
 import request from "supertest";
 import app from "../../server";
 import { DEPARTMENT_DTO_VALIDATION_MESSAGE, DEPARTMENT_NOT_FOUND, DEPARTMENT_ROUTE_TEST, DEPARTMENT_SUCCESS_MESSAGE } from "./department.constant";
-import { createTestDepartment } from "../../helpers/department.factory";
+import { createTestDepartment } from "../../shared/helpers/department.factory";
 
 describe("Department endpoint test", () => {
   let departmentId: string;

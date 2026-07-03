@@ -1,5 +1,5 @@
-import type { CreateJobOpeningDto } from "../feature/job-opening/job-opening.dto";
-import { JobOpeningService } from "../feature/job-opening/job-opening.service";
+import type { CreateJobOpeningDto } from "../../feature/job-opening/job-opening.dto";
+import { JobOpeningService } from "../../feature/job-opening/job-opening.service";
 import { createTestDepartment } from "./department.factory";
 
 export async function createTestJobOpening(overrides: Partial<CreateJobOpeningDto> = {}) {

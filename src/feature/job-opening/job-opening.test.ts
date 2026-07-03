@@ -3,7 +3,7 @@ import { clearDb } from "../../../tests/helpers/clear-db";
 import request from "supertest";
 import app from "../../server";
 import { authenticate } from "../../../tests/helpers/auth.helper";
-import { createTestJobOpening } from "../../helpers/job-opening.factory";
+import { createTestJobOpening } from "../../shared/helpers/job-opening.factory";
 import { JOB_OPENING_DTO_VALIDATION_MESSAGE, JOB_OPENING_NOT_FOUND, JOB_OPENING_ROUTE_TEST, JOB_OPENING_SUCCESS_MESSAGE } from "./job-opening.constant";
 import type { CreateJobOpeningDto } from "./job-opening.dto";
 

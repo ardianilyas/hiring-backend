@@ -1,6 +1,6 @@
 import { Router } from "express";
-import departmentRoute from "../feature/department/department.route";
-import jobOpeningRoute from "../feature/job-opening/job-opening.route";
+import departmentRoute from "../../feature/department/department.route";
+import jobOpeningRoute from "../../feature/job-opening/job-opening.route";
 
 const router = Router();
 

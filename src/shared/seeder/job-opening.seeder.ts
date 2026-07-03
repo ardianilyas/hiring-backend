@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { db } from "../db";
 import { jobOpenings } from "../db/schemas";
-import type { CreateJobOpeningDto } from "../feature/job-opening/job-opening.dto";
+import type { CreateJobOpeningDto } from "../../feature/job-opening/job-opening.dto";
 
 export async function seedJobOpening(departmentIds: string[], count: number = 0, ) {
   if(departmentIds.length <= 0) throw new Error("Department ids empty");

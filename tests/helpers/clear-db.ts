@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { db } from "../../src/db";
+import { db } from "../../src/shared/db";
 
 export async function clearDb() {
   await db.execute(

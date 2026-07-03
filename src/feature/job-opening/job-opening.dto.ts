@@ -1,5 +1,5 @@
 import z from "zod";
-import { employmentTypeEnum, jobOpenings } from "../../db/schemas";
+import { employmentTypeEnum, jobOpenings } from "../../shared/db/schemas";
 import { JOB_OPENING_DTO_VALIDATION_MESSAGE } from "./job-opening.constant";
 
 export type JobOpening = typeof jobOpenings.$inferSelect;

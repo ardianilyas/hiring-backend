@@ -1,7 +1,7 @@
 import { desc, eq } from "drizzle-orm";
-import { db } from "../../db";
-import { departments } from "../../db/schemas";
-import { NotFoundError } from "../../errors/not-found";
+import { db } from "../../shared/db";
+import { departments } from "../../shared/db/schemas";
+import { NotFoundError } from "../../shared/errors/not-found";
 import type { CreateDepartmentDto, UpdateDepartmentDto } from "./department.dto";
 import { DEPARTMENT_NOT_FOUND } from "./department.constant";
 

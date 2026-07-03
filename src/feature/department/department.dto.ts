@@ -1,5 +1,5 @@
 import z from "zod";
-import type { departments } from "../../db/schemas";
+import type { departments } from "../../shared/db/schemas";
 import { DEPARTMENT_DTO_VALIDATION_MESSAGE } from "./department.constant";
 
 export type Department = typeof departments.$inferSelect;

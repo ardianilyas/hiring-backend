@@ -1,5 +1,5 @@
-import type { CreateDepartmentDto } from "../feature/department/department.dto";
-import { DepartmentService } from "../feature/department/department.service";
+import type { CreateDepartmentDto } from "../../feature/department/department.dto";
+import { DepartmentService } from "../../feature/department/department.service";
 
 export async function createTestDepartment(overrides: Partial<CreateDepartmentDto> = {}) {
   const departmentService = new DepartmentService();

@@ -1,24 +1,5 @@
 import "express";
-import type { roleEnum } from "../../db/schemas";
-
-type UserRole = typeof roleEnum.enumValues[number];
-
-export interface SessionUser {
-  id: string;
-  name?: string;
-  email: string;
-  role: UserRole,
-  image?: string | null | undefined;
-}
-
-export interface AuthSession {
-  session: {
-    id: string;
-    expiresAt: Date;
-  };
-
-  user: SessionUser;
-}
+import type { AuthSession } from "../constants/auth.constants";
 
 declare global {
   namespace Express {
