@@ -1,5 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { clearDb } from "../../../tests/helpers/clear-db";
+import { beforeEach, describe, expect, it } from "vitest";
 import request from "supertest";
 import app from "../../server";
 import { authenticate } from "../../../tests/helpers/auth.helper";
