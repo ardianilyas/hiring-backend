@@ -1,10 +1,12 @@
 import { relations } from "drizzle-orm";
-import { departments } from "../schemas";
 import { jobOpenings } from "../schemas/job-opening.schema";
+import { applications, departments } from "../schemas";
 
-export const departmentRelations = relations(
-  departments,
-  ({ many }) => ({
-    jobOpenings: many(jobOpenings)
+export const jobOpeningsRelations = relations(jobOpenings, ({ one, many }) => ({
+    department: one(departments, {
+      fields: [jobOpenings.departmentId],
+      references: [departments.id],
+    }),
+    applications: many(applications),
   })
 );

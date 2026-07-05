@@ -11,7 +11,7 @@ export const AUTH_STATUS_CODE = {
   FORBIDDEN: 403,
 } as const;
 
-type UserRole = typeof roleEnum.enumValues[number];
+export type UserRole = typeof roleEnum.enumValues[number];
 
 export interface SessionUser {
   id: string;
