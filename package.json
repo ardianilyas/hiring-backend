@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "bun --watch src/server.ts",
-    "seed": "bun src/seeder/index.ts",
+    "seed": "bun src/shared/seeder/index.ts",
     "test": "vitest",
     "test:coverage": "vitest run --coverage"
   },

@@ -15,7 +15,9 @@ export async function seedJobOpening(departmentIds: string[], count: number = 0,
     isActive: true,
   })) 
 
-  await db.insert(jobOpenings).values(data);
+  const result = await db.insert(jobOpenings).values(data).returning({ id: jobOpenings.id });
 
   console.log(`Created ${count} job openings`);
+
+  return result.map((item) => item.id);
 }
