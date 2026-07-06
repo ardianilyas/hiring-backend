@@ -1,5 +1,6 @@
 import z from "zod";
 import { employmentTypeEnum, jobOpenings } from "../../shared/db/schemas";
+import { paginationQueryDto } from "../../shared/utils/pagination";
 import { JOB_OPENING_DTO_VALIDATION_MESSAGE } from "./job-opening.constant";
 
 export type JobOpening = typeof jobOpenings.$inferSelect;
@@ -16,6 +17,14 @@ export const createJobOpeningDto = z.object({
 export const getJobOpeningDto = z.uuid({ error: JOB_OPENING_DTO_VALIDATION_MESSAGE.GET_JOB_OPENING.id.uuid });
 export const updateJobOpeningDto = createJobOpeningDto.partial();
 
+export const getJobOpeningsQueryDto = paginationQueryDto.extend({
+  search: z.string().optional(),
+  departmentId: z.string().uuid().optional(),
+  location: z.string().optional(),
+  employmentType: z.enum(employmentTypeEnum.enumValues).optional(),
+});
+
 export type CreateJobOpeningDto = z.infer<typeof createJobOpeningDto>;
 export type GetJobOpeningDto = z.infer<typeof getJobOpeningDto>;
 export type UpdateJobOpeningDto = z.infer<typeof updateJobOpeningDto>;
+export type GetJobOpeningsQueryDto = z.infer<typeof getJobOpeningsQueryDto>;

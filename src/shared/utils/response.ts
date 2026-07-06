@@ -3,7 +3,8 @@ import type { Response } from "express";
 type SuccessResponse<T> = {
   success: true;
   message: string;
-  data?: T
+  data?: T;
+  meta?: unknown;
 };
 
 type ErrorResponse = {
@@ -16,12 +17,14 @@ export const sendSuccess = <T>(
   res: Response,
   message: string,
   data?: T,
+  meta?: unknown,
   statusCode = 200
 ) => {
   const response: SuccessResponse<T> = {
     success: true,
     message,
-    data
+    data,
+    meta
   };
 
   return res.status(statusCode).json(response);

@@ -46,7 +46,7 @@ describe("Job opening test", () => {
       expect(response.body.message).toBe("Forbidden");
     });
 
-    it("should return 200 and get job openings", async () => {
+    it("should return 200 and get job openings with pagination meta", async () => {
       const auth = await authenticate('admin');
       const response = await auth.agent.get(JOB_OPENING_ROUTE_TEST.GET_JOB_OPENINGS);
 
@@ -54,6 +54,18 @@ describe("Job opening test", () => {
       expect(response.body.message).toBe(JOB_OPENING_SUCCESS_MESSAGE.GET_JOB_OPENINGS);
       expect(response.body.data).toBeInstanceOf(Array);
       expect(response.body.data[0].department).toBeInstanceOf(Object);
+      expect(response.body.meta).toBeDefined();
+      expect(response.body.meta.page).toBe(1);
+      expect(response.body.meta.limit).toBe(10);
+      expect(typeof response.body.meta.total).toBe('number');
+    });
+
+    it("should filter job openings by search query", async () => {
+      const auth = await authenticate('admin');
+      const response = await auth.agent.get(`${JOB_OPENING_ROUTE_TEST.GET_JOB_OPENINGS}?search=Software Engineer`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.data).toBeInstanceOf(Array);
     });
   });
 
