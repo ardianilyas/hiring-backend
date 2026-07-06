@@ -2,7 +2,7 @@ import { desc, eq } from "drizzle-orm";
 import { db } from "../../shared/db";
 import { applications } from "../../shared/db/schemas";
 import { NotFoundError } from "../../shared/errors/not-found";
-import type { CreateApplicationDto } from "./application.dto";
+import type { CreateApplicationDto, UpdateApplicationStatusDto } from "./application.dto";
 import { APPLICATION_NOT_FOUND } from "./application.constant";
 
 export class ApplicationService {
@@ -35,6 +35,32 @@ export class ApplicationService {
       ...data,
       userId,
     }).returning();
+
+    return application;
+  }
+
+  async getMyApplications(userId: string) {
+    return await db.query.applications.findMany({
+      where: eq(applications.userId, userId),
+      orderBy: [desc(applications.createdAt)],
+      with: {
+        jobOpening: true,
+      }
+    });
+  }
+
+  async updateApplicationStatus(id: string, data: UpdateApplicationStatusDto) {
+    const [application] = await db.update(applications)
+      .set({
+        status: data.status,
+        feedback: data.feedback,
+      })
+      .where(eq(applications.id, id))
+      .returning();
+
+    if(!application) {
+      throw new NotFoundError(APPLICATION_NOT_FOUND);
+    }
 
     return application;
   }

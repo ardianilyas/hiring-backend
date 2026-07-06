@@ -2,7 +2,7 @@ import { asyncHandler } from "../../shared/utils/async-handler";
 import { sendSuccess } from "../../shared/utils/response";
 import { validate } from "../../shared/utils/validate";
 import { APPLICATION_SUCCESS_MESSAGE } from "./application.constant";
-import { createApplicationDto, getApplicationDto } from "./application.dto";
+import { createApplicationDto, getApplicationDto, updateApplicationStatusDto } from "./application.dto";
 import type { ApplicationService } from "./application.service";
 import type { Request, Response } from "express";
 import { UnauthorizedError } from "../../shared/errors/unauthorized";
@@ -25,6 +25,19 @@ export class ApplicationController {
     if (!req.auth) throw new UnauthorizedError();
     const data = validate(createApplicationDto, req.body);
     const application = await this.applicationService.createApplication(req.auth.user.id, data);
+    return sendSuccess(res, APPLICATION_SUCCESS_MESSAGE, application);
+  });
+
+  getMyApplications = asyncHandler(async(req: Request, res: Response) => {
+    if (!req.auth) throw new UnauthorizedError();
+    const applications = await this.applicationService.getMyApplications(req.auth.user.id);
+    return sendSuccess(res, APPLICATION_SUCCESS_MESSAGE, applications);
+  });
+
+  updateApplicationStatus = asyncHandler(async(req: Request, res: Response) => {
+    const id = validate(getApplicationDto, req.params.id);
+    const data = validate(updateApplicationStatusDto, req.body);
+    const application = await this.applicationService.updateApplicationStatus(id, data);
     return sendSuccess(res, APPLICATION_SUCCESS_MESSAGE, application);
   });
 }

@@ -4,6 +4,8 @@ export const APPLICATION_DELETED = "Application deleted successfully";
 
 export const APPLICATION_ROUTE_TEST = {
   GET_APPLICATIONS: "/api/applications",
+  GET_MY_APPLICATIONS: "/api/applications/me",
   GET_APPLICATION: (id: string) => `/api/applications/${id}`,
   CREATE_APPLICATION: "/api/applications",
+  UPDATE_APPLICATION_STATUS: (id: string) => `/api/applications/${id}/status`,
 }
