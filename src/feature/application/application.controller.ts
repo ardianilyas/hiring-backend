@@ -4,9 +4,10 @@ import { validate } from "../../shared/utils/validate";
 import { APPLICATION_SUCCESS_MESSAGE } from "./application.constant";
 import { createApplicationDto, getApplicationDto, updateApplicationStatusDto } from "./application.dto";
 import type { ApplicationService } from "./application.service";
+import { ApplicationPolicy } from "./application.policy";
 import type { Request, Response } from "express";
 import type { AuthenticatedRequest } from "../../shared/types";
-import { ForbiddenError } from "../../shared/errors/forbidden";
+import { authorize } from "../../shared/utils/authorize";
 
 export class ApplicationController {
   constructor(private readonly applicationService: ApplicationService) {}
@@ -20,9 +21,8 @@ export class ApplicationController {
     const id = validate(getApplicationDto, req.params.id);
     const application = await this.applicationService.getApplication(id);
 
-    if (application.userId !== req.auth.user.id && req.auth.user.role !== "admin") {
-      throw new ForbiddenError();
-    }
+    const policy = new ApplicationPolicy();
+    authorize(policy.view(req.auth.user, application));
 
     return sendSuccess(res, APPLICATION_SUCCESS_MESSAGE, application);
   });
