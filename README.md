@@ -2,6 +2,15 @@
 
 A modern backend boilerplate using **Express.js**, **TypeScript**, **Better Auth**, and **Drizzle ORM** with PostgreSQL.
 
+## 🌟 Features
+
+- **Authentication & Authorization**: Secure email/password login, session management, and role-based access control (Admin/User) powered by Better Auth.
+- **Departments Management**: Organize job postings by creating and managing different company departments.
+- **Job Openings**: Seamlessly manage job postings, defining roles, requirements, and statuses linked to specific departments.
+- **Applications Processing**: Allow users to submit applications (cover letters, resumes) to job openings, with robust foreign-key validation and error handling.
+- **Database Seeding**: Easily populate your local environment with dummy departments, job openings, users, and applications using a single command.
+- **Automated Testing**: Comprehensive feature and unit test coverage utilizing Vitest and Supertest.
+
 ## 🛠️ Tech Stack
 
 - **Framework**: [Express.js](https://expressjs.com/)
@@ -17,53 +26,56 @@ A modern backend boilerplate using **Express.js**, **TypeScript**, **Better Auth
 .
 ├── drizzle/            # Generated database migrations
 ├── src/                # Application source code
-│   ├── config/         # Environment variables and configurations
-│   ├── db/             # Drizzle setup, schemas, and relations
-│   ├── errors/         # Custom error classes (AppError, NotFound, etc.)
-│   ├── lib/            # External library setup (e.g., Better Auth configuration)
-│   ├── middlewares/    # Express middlewares (error handler, auth guard, roles)
-│   ├── routes/         # Express router definitions
-│   ├── shared/         # Shared utilities, constants, and types
+│   ├── feature/        # Feature modules (application, department, job-opening)
+│   ├── shared/         # Shared utilities, constants, database schemas, and seeders
 │   └── server.ts       # Express application setup
 ├── tests/              # E2E and integration tests using Vitest
 │   ├── helpers/        # Test utilities (db cleaner, auth helper)
-│   ├── setup.ts        # Global test setup
-│   └── *.test.ts       # Test files
+│   └── setup.ts        # Global test setup
 ├── drizzle.config.ts   # Drizzle ORM configuration
 ├── vitest.config.ts    # Vitest configuration
 └── package.json        # Dependencies and scripts
 ```
 
-## 🚀 Getting Started
+## 🚀 Installation & Walkthrough
 
-1. **Install dependencies**
+Follow these steps to set up and run the backend locally:
+
+1. **Install Dependencies**
+   Use Bun to install project dependencies.
    ```bash
    bun install
    ```
 
 2. **Environment Variables**
-   Copy `.env.example` to `.env` and fill in your details:
+   Copy the example environment file and fill in your PostgreSQL connection string and other required details:
    ```bash
    cp .env.example .env
    ```
 
 3. **Database Setup**
-   Generate and push your database schema using Drizzle:
+   Generate the Drizzle schema and push it to your connected PostgreSQL database:
    ```bash
    bunx drizzle-kit generate
    bunx drizzle-kit push
    ```
 
-4. **Run the server**
-   Start the development server:
+4. **Seed the Database**
+   Populate your database with realistic dummy data (users, departments, job openings, applications) to test the APIs right away:
+   ```bash
+   bun run seed
+   ```
+
+5. **Run the Development Server**
+   Start the application in development mode with hot-reload:
    ```bash
    bun run dev
    ```
 
-5. **Run tests**
-   Execute the test suite:
+6. **Run Tests**
+   Execute the automated test suite to ensure everything is working correctly:
    ```bash
-   bun test
+   bun run test
    ```
 
 ## 🔐 Auth Routes (Better Auth)
