@@ -5,7 +5,7 @@ import { APPLICATION_SUCCESS_MESSAGE } from "./application.constant";
 import { createApplicationDto, getApplicationDto, updateApplicationStatusDto } from "./application.dto";
 import type { ApplicationService } from "./application.service";
 import type { Request, Response } from "express";
-import { UnauthorizedError } from "../../shared/errors/unauthorized";
+import type { AuthenticatedRequest } from "../../shared/types";
 
 export class ApplicationController {
   constructor(private readonly applicationService: ApplicationService) {}
@@ -21,15 +21,13 @@ export class ApplicationController {
     return sendSuccess(res, APPLICATION_SUCCESS_MESSAGE, application);
   });
 
-  createApplication = asyncHandler(async(req: Request, res: Response) => {
-    if (!req.auth) throw new UnauthorizedError();
+  createApplication = asyncHandler(async(req: AuthenticatedRequest, res: Response) => {
     const data = validate(createApplicationDto, req.body);
     const application = await this.applicationService.createApplication(req.auth.user.id, data);
     return sendSuccess(res, APPLICATION_SUCCESS_MESSAGE, application);
   });
 
-  getMyApplications = asyncHandler(async(req: Request, res: Response) => {
-    if (!req.auth) throw new UnauthorizedError();
+  getMyApplications = asyncHandler(async(req: AuthenticatedRequest, res: Response) => {
     const applications = await this.applicationService.getMyApplications(req.auth.user.id);
     return sendSuccess(res, APPLICATION_SUCCESS_MESSAGE, applications);
   });
