@@ -34,10 +34,21 @@ export const errorHandler = (
   }
 
   /**
+   * Database Error
+   */
+  const errorCode = (err as any).code || (err as any).cause?.code;
+  if (errorCode === "23503") {
+    return res.status(400).json({
+      success: false,
+      message: "Related record not found",
+    });
+  }
+
+  /**
    * Unknown Error
    */
   return res.status(500).json({
     success: false,
-    message: "Internal Server Error",
+    message: err.message ?? "Internal Server Error",
   });
 };
