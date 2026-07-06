@@ -6,6 +6,7 @@ import { createApplicationDto, getApplicationDto, updateApplicationStatusDto } f
 import type { ApplicationService } from "./application.service";
 import type { Request, Response } from "express";
 import type { AuthenticatedRequest } from "../../shared/types";
+import { ForbiddenError } from "../../shared/errors/forbidden";
 
 export class ApplicationController {
   constructor(private readonly applicationService: ApplicationService) {}
@@ -15,9 +16,14 @@ export class ApplicationController {
     return sendSuccess(res, APPLICATION_SUCCESS_MESSAGE, applications);
   });
 
-  getApplication = asyncHandler(async(req: Request, res: Response) => {
+  getApplication = asyncHandler(async(req: AuthenticatedRequest, res: Response) => {
     const id = validate(getApplicationDto, req.params.id);
     const application = await this.applicationService.getApplication(id);
+
+    if (application.userId !== req.auth.user.id && req.auth.user.role !== "admin") {
+      throw new ForbiddenError();
+    }
+
     return sendSuccess(res, APPLICATION_SUCCESS_MESSAGE, application);
   });
 

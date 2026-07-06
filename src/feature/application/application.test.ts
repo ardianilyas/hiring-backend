@@ -66,7 +66,7 @@ describe("Application endpoint", () => {
       expect(response.body.message).toBe("Unauthorized");
     });
 
-    it("should return 403 if not an admin", async () => {
+    it("should return 403 if not an admin and not owner", async () => {
       const auth = await authenticate();
       const response = await auth.agent.get(
         APPLICATION_ROUTE_TEST.GET_APPLICATION(applicationId),
@@ -74,6 +74,31 @@ describe("Application endpoint", () => {
 
       expect(response.status).toBe(403);
       expect(response.body.message).toBe("Forbidden");
+    });
+
+    it("should return 200 if the user is the owner", async () => {
+      const auth = await authenticate();
+      const jobOpening = await createTestJobOpening();
+
+      if (!jobOpening) throw new Error("Failed to create job opening");
+
+      const createResponse = await auth.agent
+        .post(APPLICATION_ROUTE_TEST.CREATE_APPLICATION)
+        .send({
+          jobOpeningId: jobOpening.id,
+          coverLetter: "Owner cover letter",
+          resume: "https://example.com/resume.pdf",
+        });
+        
+      const myApplicationId = createResponse.body.data.id;
+
+      const response = await auth.agent.get(
+        APPLICATION_ROUTE_TEST.GET_APPLICATION(myApplicationId),
+      );
+
+      expect(response.status).toBe(200);
+      expect(response.body.message).toBe(APPLICATION_SUCCESS_MESSAGE);
+      expect(response.body.data.id).toBe(myApplicationId);
     });
 
     it("should return 400 when id is not valid uuid", async () => {
