@@ -31,24 +31,8 @@ describe("Job opening test", () => {
   });
 
   describe("GET /api/job-openings", () => {
-    it("should return 401 if not authenticated", async () => {
-      const response = await request(app).get(JOB_OPENING_ROUTE_TEST.GET_JOB_OPENINGS);
-
-      expect(response.status).toBe(401);
-      expect(response.body.message).toBe("Unauthorized");
-    });
-
-    it("should return 403 if not an admin", async () => {
-      const auth = await authenticate();
-      const response = await auth.agent.get(JOB_OPENING_ROUTE_TEST.GET_JOB_OPENINGS);
-
-      expect(response.status).toBe(403);
-      expect(response.body.message).toBe("Forbidden");
-    });
-
     it("should return 200 and get job openings with pagination meta", async () => {
-      const auth = await authenticate('admin');
-      const response = await auth.agent.get(JOB_OPENING_ROUTE_TEST.GET_JOB_OPENINGS);
+      const response = await request(app).get(JOB_OPENING_ROUTE_TEST.GET_JOB_OPENINGS);
 
       expect(response.status).toBe(200);
       expect(response.body.message).toBe(JOB_OPENING_SUCCESS_MESSAGE.GET_JOB_OPENINGS);
@@ -61,8 +45,7 @@ describe("Job opening test", () => {
     });
 
     it("should filter job openings by search query", async () => {
-      const auth = await authenticate('admin');
-      const response = await auth.agent.get(`${JOB_OPENING_ROUTE_TEST.GET_JOB_OPENINGS}?search=Software Engineer`);
+      const response = await request(app).get(`${JOB_OPENING_ROUTE_TEST.GET_JOB_OPENINGS}?search=Software Engineer`);
 
       expect(response.status).toBe(200);
       expect(response.body.data).toBeInstanceOf(Array);
@@ -70,24 +53,8 @@ describe("Job opening test", () => {
   });
 
   describe("GET api/job-openings/:id", () => {
-    it("should return 401 if not authenticated", async () => {
-      const response = await request(app).get(JOB_OPENING_ROUTE_TEST.GET_JOB_OPENING(jobOpeningId));
-
-      expect(response.status).toBe(401);
-      expect(response.body.message).toBe("Unauthorized");
-    });
-
-    it("should return 403 if not an admin", async () => {
-      const auth = await authenticate();
-      const response = await auth.agent.get(JOB_OPENING_ROUTE_TEST.GET_JOB_OPENING(jobOpeningId));
-
-      expect(response.status).toBe(403);
-      expect(response.body.message).toBe("Forbidden");
-    });
-
     it("should return 400 when id is not valid uuid", async () => {
-      const auth = await authenticate('admin');
-      const response = await auth.agent.get(JOB_OPENING_ROUTE_TEST.GET_JOB_OPENING("123123"));
+      const response = await request(app).get(JOB_OPENING_ROUTE_TEST.GET_JOB_OPENING("123123"));
 
       expect(response.status).toBe(400);
       expect(response.body.message).toBe("Validation Error");
@@ -95,16 +62,14 @@ describe("Job opening test", () => {
     });
 
     it("should return 404 when job opening not found", async () => {
-      const auth = await authenticate('admin');
-      const response = await auth.agent.get(JOB_OPENING_ROUTE_TEST.GET_JOB_OPENING(invalidUuid));
+      const response = await request(app).get(JOB_OPENING_ROUTE_TEST.GET_JOB_OPENING(invalidUuid));
 
       expect(response.status).toBe(404);
       expect(response.body.message).toBe(JOB_OPENING_NOT_FOUND);
     });
 
     it("should return 200 and get job opening", async () => {
-      const auth = await authenticate('admin');
-      const response = await auth.agent.get(JOB_OPENING_ROUTE_TEST.GET_JOB_OPENING(jobOpeningId));
+      const response = await request(app).get(JOB_OPENING_ROUTE_TEST.GET_JOB_OPENING(jobOpeningId));
 
       expect(response.status).toBe(200);
       expect(response.body.message).toBe(JOB_OPENING_SUCCESS_MESSAGE.GET_JOB_OPENING)
