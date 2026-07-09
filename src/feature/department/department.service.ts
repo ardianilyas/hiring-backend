@@ -1,7 +1,8 @@
 import { desc, eq } from "drizzle-orm";
 import { db } from "../../shared/db";
-import { departments } from "../../shared/db/schemas";
+import { departments, jobOpenings } from "../../shared/db/schemas";
 import { NotFoundError } from "../../shared/errors/not-found";
+import { BadRequestError } from "../../shared/errors/bad-request";
 import type { CreateDepartmentDto, UpdateDepartmentDto } from "./department.dto";
 import { DEPARTMENT_NOT_FOUND } from "./department.constant";
 
@@ -41,6 +42,14 @@ export class DepartmentService {
   }
 
   async deleteDepartment(id: string) {
+    const existingJobs = await db.query.jobOpenings.findFirst({
+      where: eq(jobOpenings.departmentId, id),
+    });
+
+    if (existingJobs) {
+      throw new BadRequestError("Cannot delete department because it still has associated job openings.");
+    }
+
     const [department] = await db.delete(departments).where(eq(departments.id, id)).returning();
 
     if (!department) {
