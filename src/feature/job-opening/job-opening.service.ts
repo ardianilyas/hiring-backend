@@ -11,6 +11,7 @@ export class JobOpeningService {
     const { page, limit, search, departmentId, location, employmentType } = query;
 
     const whereClause = and(
+      eq(jobOpenings.isActive, true),
       search ? ilike(jobOpenings.title, `%${search}%`) : undefined,
       departmentId ? eq(jobOpenings.departmentId, departmentId) : undefined,
       location ? ilike(jobOpenings.location, `%${location}%`) : undefined,
@@ -39,7 +40,7 @@ export class JobOpeningService {
 
   async getJobOpening(id: string) {
     const [jobOpening] = await db.query.jobOpenings.findMany({
-      where: eq(jobOpenings.id, id),
+      where: and(eq(jobOpenings.id, id), eq(jobOpenings.isActive, true)),
       with: {
         department: true,
       }

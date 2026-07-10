@@ -50,6 +50,22 @@ describe("Job opening test", () => {
       expect(response.status).toBe(200);
       expect(response.body.data).toBeInstanceOf(Array);
     });
+
+    it("should not return inactive job openings", async () => {
+      const auth = await authenticate('admin');
+      const createResponse = await auth.agent.post(JOB_OPENING_ROUTE_TEST.CREATE_JOB_OPENING).send({
+        ...data, departmentId, isActive: false
+      });
+      const inactiveJobId = createResponse.body.data.id;
+
+      const getResponse = await request(app).get(JOB_OPENING_ROUTE_TEST.GET_JOB_OPENINGS);
+      
+      const found = getResponse.body.data.find((job: any) => job.id === inactiveJobId);
+      expect(found).toBeUndefined();
+
+      const getSingleResponse = await request(app).get(JOB_OPENING_ROUTE_TEST.GET_JOB_OPENING(inactiveJobId));
+      expect(getSingleResponse.status).toBe(404);
+    });
   });
 
   describe("GET api/job-openings/:id", () => {

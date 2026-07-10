@@ -5,12 +5,12 @@ import * as schema from "../../src/shared/db/schemas";
 import { eq } from "drizzle-orm";
 import type { UserRole } from "../../src/shared/constants/auth.constants";
 
-export async function authenticate(role: UserRole = "user") {
+export async function authenticate(role: UserRole = "user", email: string = `test-${Date.now()}-${Math.random()}@example.com`) {
   const agent = request.agent(app)
 
   const user = {
     name: "Test User",
-    email: "test@example.com",
+    email,
     password: "password123"
   }
 
