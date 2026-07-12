@@ -53,6 +53,11 @@ describe("Application endpoint", () => {
       expect(response.status).toBe(200);
       expect(response.body.message).toBe(APPLICATION_SUCCESS_MESSAGE);
       expect(response.body.data).toBeInstanceOf(Array);
+      expect(response.body.data[0].jobOpening).toBeInstanceOf(Object);
+      expect(response.body.data[0].jobOpening.title).toBeDefined();
+      expect(response.body.meta).toBeDefined();
+      expect(response.body.meta.page).toBe(1);
+      expect(response.body.meta.limit).toBe(10);
     });
   });
 

@@ -1,18 +1,36 @@
-import { desc, eq } from "drizzle-orm";
+import { desc, eq, count } from "drizzle-orm";
 import { db } from "../../shared/db";
 import { applications } from "../../shared/db/schemas";
 import { NotFoundError } from "../../shared/errors/not-found";
-import type { CreateApplicationDto, UpdateApplicationStatusDto } from "./application.dto";
+import type { CreateApplicationDto, GetApplicationsQueryDto, UpdateApplicationStatusDto } from "./application.dto";
 import { APPLICATION_NOT_FOUND } from "./application.constant";
+import { createPaginatedResponse } from "../../shared/utils/pagination";
 
 export class ApplicationService {
-  async getApplications() {
-    return await db.query.applications.findMany({
+  async getApplications(query: GetApplicationsQueryDto, baseUrl: string) {
+    const { page, limit } = query;
+
+    const [totalCountResult] = await db
+      .select({ value: count() })
+      .from(applications);
+
+    const total = totalCountResult.value;
+
+    const data = await db.query.applications.findMany({
       orderBy: [desc(applications.createdAt)],
+      limit,
+      offset: (page - 1) * limit,
       with: {
         user: true,
+        jobOpening: {
+          columns: {
+            title: true,
+          }
+        }
       }
-    })
+    });
+
+    return createPaginatedResponse(data, total, page, limit, baseUrl, query);
   }
 
   async getApplication(id: string) {

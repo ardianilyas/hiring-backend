@@ -43,7 +43,7 @@ All endpoints require authentication (e.g., via `better-auth` sessions or tokens
 
 | Method | Endpoint | Description | Access |
 |--------|----------|-------------|--------|
-| GET | `/` | Get a list of all applications. | Admin Only |
+| GET | `/` | Get a paginated list of all applications. Supports query params: `page`, `limit`. | Admin Only |
 | GET | `/me` | Get a list of applications submitted by the currently authenticated user. | Authenticated |
 | GET | `/:id` | Get details of a specific application. | Admin or Owner |
 | POST | `/` | Submit a new application for a job opening.<br/>**Body:**<br/>`{`<br/>&nbsp;&nbsp;`"jobOpeningId": "uuid",`<br/>&nbsp;&nbsp;`"resume": "string",`<br/>&nbsp;&nbsp;`"coverLetter": "string (optional)"`<br/>`}` | Authenticated |

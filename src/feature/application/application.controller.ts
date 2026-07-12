@@ -2,7 +2,7 @@ import { asyncHandler } from "../../shared/utils/async-handler";
 import { sendSuccess } from "../../shared/utils/response";
 import { validate } from "../../shared/utils/validate";
 import { APPLICATION_SUCCESS_MESSAGE } from "./application.constant";
-import { createApplicationDto, getApplicationDto, updateApplicationStatusDto } from "./application.dto";
+import { createApplicationDto, getApplicationDto, getApplicationsQueryDto, updateApplicationStatusDto } from "./application.dto";
 import type { ApplicationService } from "./application.service";
 import { ApplicationPolicy } from "./application.policy";
 import type { Request, Response } from "express";
@@ -13,8 +13,11 @@ export class ApplicationController {
   constructor(private readonly applicationService: ApplicationService) {}
 
   getApplications = asyncHandler(async(req: Request, res: Response) => {
-    const applications = await this.applicationService.getApplications();
-    return sendSuccess(res, APPLICATION_SUCCESS_MESSAGE, applications);
+    const query = validate(getApplicationsQueryDto, req.query);
+    const baseUrl = `${req.protocol}://${req.get("host")}${req.baseUrl}${req.path}`;
+    const applications = await this.applicationService.getApplications(query, baseUrl);
+    
+    return sendSuccess(res, APPLICATION_SUCCESS_MESSAGE, applications.data, applications.meta);
   });
 
   getApplication = asyncHandler(async(req: AuthenticatedRequest, res: Response) => {

@@ -1,6 +1,7 @@
 import z from "zod";
 import type { applications } from "../../shared/db/schemas";
 import { applicationStatusEnum } from "../../shared/db/schemas/enums.schema";
+import { paginationQueryDto } from "../../shared/utils/pagination";
 
 export type Application = typeof applications.$inferSelect;
 
@@ -12,6 +13,8 @@ export const createApplicationDto = z.object({
 
 export const getApplicationDto = z.uuid();
 
+export const getApplicationsQueryDto = paginationQueryDto;
+
 export const updateApplicationDto = createApplicationDto.partial();
 
 export const updateApplicationStatusDto = z.object({
@@ -21,5 +24,6 @@ export const updateApplicationStatusDto = z.object({
 
 export type CreateApplicationDto = z.infer<typeof createApplicationDto>;
 export type GetApplicationDto = z.infer<typeof getApplicationDto>;
+export type GetApplicationsQueryDto = z.infer<typeof getApplicationsQueryDto>;
 export type UpdateApplicationDto = z.infer<typeof updateApplicationDto>;
 export type UpdateApplicationStatusDto = z.infer<typeof updateApplicationStatusDto>;
