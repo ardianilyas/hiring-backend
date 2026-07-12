@@ -7,11 +7,11 @@ import { JOB_OPENING_NOT_FOUND } from "./job-opening.constant";
 import { createPaginatedResponse } from "../../shared/utils/pagination";
 
 export class JobOpeningService {
-  async getJobOpenings(query: GetJobOpeningsQueryDto, baseUrl: string) {
+  async getJobOpenings(query: GetJobOpeningsQueryDto, baseUrl: string, isAdmin: boolean = false) {
     const { page, limit, search, departmentId, location, employmentType } = query;
 
     const whereClause = and(
-      eq(jobOpenings.isActive, true),
+      !isAdmin ? eq(jobOpenings.isActive, true) : undefined,
       search ? ilike(jobOpenings.title, `%${search}%`) : undefined,
       departmentId ? eq(jobOpenings.departmentId, departmentId) : undefined,
       location ? ilike(jobOpenings.location, `%${location}%`) : undefined,
@@ -38,9 +38,9 @@ export class JobOpeningService {
     return createPaginatedResponse(data, total, page, limit, baseUrl, query);
   }
 
-  async getJobOpening(id: string) {
+  async getJobOpening(id: string, isAdmin: boolean = false) {
     const [jobOpening] = await db.query.jobOpenings.findMany({
-      where: and(eq(jobOpenings.id, id), eq(jobOpenings.isActive, true)),
+      where: and(eq(jobOpenings.id, id), !isAdmin ? eq(jobOpenings.isActive, true) : undefined),
       with: {
         department: true,
       }

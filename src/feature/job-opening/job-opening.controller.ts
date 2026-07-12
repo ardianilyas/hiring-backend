@@ -4,22 +4,34 @@ import { asyncHandler } from "../../shared/utils/async-handler";
 import { validate } from "../../shared/utils/validate";
 import { createJobOpeningDto, getJobOpeningDto, getJobOpeningsQueryDto, updateJobOpeningDto } from "./job-opening.dto";
 import { sendSuccess } from "../../shared/utils/response";
+import { auth } from "../../shared/lib/auth";
+import { fromNodeHeaders } from "better-auth/node";
 import { JOB_OPENING_SUCCESS_MESSAGE } from "./job-opening.constant";
 
 export class JobOpeningController {
   constructor(private readonly jobOpeningService: JobOpeningService) {}
 
   getJobOpenings = asyncHandler(async(req: Request, res: Response) => {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
+    const isAdmin = session?.user?.role === "admin";
+
     const query = validate(getJobOpeningsQueryDto, req.query);
     const baseUrl = `${req.protocol}://${req.get("host")}${req.originalUrl.split("?")[0]}`;
-    const paginatedResult = await this.jobOpeningService.getJobOpenings(query, baseUrl);
+    const paginatedResult = await this.jobOpeningService.getJobOpenings(query, baseUrl, isAdmin);
     
     return sendSuccess(res, JOB_OPENING_SUCCESS_MESSAGE.GET_JOB_OPENINGS, paginatedResult.data, paginatedResult.meta);
   });
 
   getJobOpening = asyncHandler(async(req: Request, res: Response) => {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
+    const isAdmin = session?.user?.role === "admin";
+
     const id = validate(getJobOpeningDto, req.params.id);
-    const jobOpening = await this.jobOpeningService.getJobOpening(id);
+    const jobOpening = await this.jobOpeningService.getJobOpening(id, isAdmin);
     return sendSuccess(res, JOB_OPENING_SUCCESS_MESSAGE.GET_JOB_OPENING, jobOpening);
   });
 
